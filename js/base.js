@@ -71,31 +71,35 @@ x.getUrlVars = function () {
         vars[hash[0]] = hash[1];
     }
     return vars;
-}
+};
 
 /**
  * Метод возвращает список параметров заданной группы из метатегов.
  * 
- * @return array Список параметров.
+ * @return object Список параметров.
  */
- x.getMetaSettings = function ( prefix ) {
+ x.getMetaSettings = function ( prefix, sepparator ) {
+
+ 	var sepparator = sepparator || ":";
+ 	prefix = prefix + sepparator;
 
 	var $meta = $("meta[name^='" + prefix + "']");
 	var length = $meta.length;
 	var reg = new RegExp(prefix);
 	var $item, name, content;
-	var data = [];
+	var data = {};
 
 	for (var i = 0; i < length ; i++) {
 		$item = $meta.eq(i);
 		name = $item.attr("name");
+		name = name.replace(reg, "");
 		content = $item.attr("content");
-		data.push({"name" : name, "content" : content});
+		data[name] = content;
 	}
 
 	return data;
 
-}
+};
 
 /** Стартуем метод-контроллер x() при DOM-ready */
 $(x);
